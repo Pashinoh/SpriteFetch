@@ -8,15 +8,11 @@ Fetch images from web pages and convert them into SVG files.
 
 ## Web Interface Preview
 
-Use this template to place a screenshot of the web interface in the README:
-
-```html
 <p align="center">
   <img src="docs/ui-preview.png" alt="SpriteFetch web interface preview" width="900" />
 </p>
-```
 
-Replace `docs/ui-preview.png` with your actual screenshot path.
+The image above is the current UI preview for the app.
 
 ## Requirements
 
