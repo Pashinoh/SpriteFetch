@@ -21,8 +21,21 @@ jobs:
 
       - name: Ensure release files exist
         run: |
-          if [ ! -f "RELEASES/${{ github.event.inputs.tag }}.md" ]; then echo "Missing RELEASES/${{ github.event.inputs.tag }}.md"; exit 1; fi
-          if [ ! -f "releases/SpriteFetch-${{ github.event.inputs.tag }}.zip" ]; then echo "Missing releases/SpriteFetch-${{ github.event.inputs.tag }}.zip"; exit 1; fi
+          TAG="${{ github.event.inputs.tag }}"
+          if [ -f "RELEASES/${TAG}.md" ]; then
+            echo "Found RELEASES/${TAG}.md"
+          elif [ -f "releases/${TAG}.md" ]; then
+            echo "Found releases/${TAG}.md"
+          else
+            echo "Missing RELEASES/${TAG}.md or releases/${TAG}.md"; exit 1;
+          fi
+          if [ -f "releases/SpriteFetch-${TAG}.zip" ]; then
+            echo "Found releases/SpriteFetch-${TAG}.zip"
+          elif [ -f "RELEASES/SpriteFetch-${TAG}.zip" ]; then
+            echo "Found RELEASES/SpriteFetch-${TAG}.zip"
+          else
+            echo "Missing releases/ or RELEASES/ SpriteFetch-${TAG}.zip"; exit 1;
+          fi
 
       - name: Create GitHub release via REST API
         env:
