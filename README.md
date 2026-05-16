@@ -5,15 +5,6 @@
 # SpriteFetch
 
 Fetch images from web pages and convert them into SVG files.
-
-<p align="center">
-  <img src="docs/ui-preview.png" alt="SpriteFetch web interface preview" width="900" />
-</p>
-
-The image above is the current UI preview for the app.
-
-## Requirements
-
 <p>
   <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+" />
   <img src="https://img.shields.io/badge/Streamlit-1.20%2B-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit" />
@@ -23,11 +14,11 @@ The image above is the current UI preview for the app.
   <img src="https://img.shields.io/badge/Requests-2.28%2B-28A745?style=for-the-badge" alt="Requests" />
 </p>
 
-Install everything with:
+<p align="center">
+  <img src="docs/ui-preview.png" alt="SpriteFetch web interface preview" width="900" />
+</p>
 
-```bash
-pip install -r requirements.txt
-```
+The image above is the current UI preview for the app.
 
 ## Quickstart
 
@@ -50,13 +41,6 @@ streamlit run app.py
 2. Enter the target page URL in the `TARGET URL` field.
 3. Click `SCAN TARGET`.
 4. Preview the assets, select the ones you want, then click `PROCESS SELECTED`.
-
-## Production Readiness
-
-- **Status:** usable for local and internal workflows.
-- **Strengths:** simple setup, clear UI flow, and direct SVG export.
-- **Current gaps:** no automated test suite, limited validation for edge cases, and no deployment pipeline.
-- **Recommended next steps:** add integration tests, stronger error handling, rate-limit protection, and a deployment target.
 
 ## Notes
 
