@@ -6,6 +6,18 @@
 
 Fetch images from web pages and convert them into SVG files.
 
+## Web Interface Preview
+
+Use this template to place a screenshot of the web interface in the README:
+
+```html
+<p align="center">
+  <img src="docs/ui-preview.png" alt="SpriteFetch web interface preview" width="900" />
+</p>
+```
+
+Replace `docs/ui-preview.png` with your actual screenshot path.
+
 ## Requirements
 
 - Python 3.10+
@@ -39,18 +51,6 @@ streamlit run app.py
 2. Enter the target page URL in the `TARGET URL` field.
 3. Click `SCAN TARGET`.
 4. Preview the assets, select the ones you want, then click `PROCESS SELECTED`.
-
-## Web Interface Preview
-
-Use this template to place a screenshot of the web interface in the README:
-
-```html
-<p align="center">
-  <img src="docs/ui-preview.png" alt="SpriteFetch web interface preview" width="900" />
-</p>
-```
-
-Replace `docs/ui-preview.png` with your actual screenshot path.
 
 ## Production Readiness
 
