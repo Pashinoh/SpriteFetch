@@ -303,8 +303,7 @@ st.markdown("""
 
 # 8-Bit Pixel Folder SVG Logo
 svg_logo = """
-<svg width="240" height="64" viewBox="0 0 320 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <svg x="0" y="0" width="64" height="64" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<svg width="68" height="68" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M2 3H6V4H8V5H14V13H2V3Z" fill="#000000"/>
         <path d="M3 4H5V5H7V6H13V12H3V4Z" fill="#FFDE00"/>
         <path d="M1 7H15V14H1V7Z" fill="#000000"/>
@@ -312,96 +311,6 @@ svg_logo = """
         <path d="M5 4H11V8H5V4Z" fill="#FFFFFF"/>
         <path d="M6 5H8V7H6V5Z" fill="#FF2400"/>
         <path d="M9 6H10V7H9V6Z" fill="#FF2400"/>
-    </svg>
-        <!-- Pixel-style text for SPRITEFETCH -->
-        <g transform="translate(82,8) scale(1)">
-            <!-- S -->
-            <g transform="translate(0,0)">
-                <rect x="0" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="12" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="18" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="24" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="6" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="12" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="18" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="18" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="12" y="18" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="18" y="18" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="24" y="18" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="24" y="24" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="24" y="30" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="18" y="30" width="6" height="6" fill="#FFFFFF"/>
-            </g>
-            <!-- P -->
-            <g transform="translate(36,0)">
-                <rect x="0" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="12" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="18" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="6" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="12" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="6" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="12" y="6" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="18" y="6" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="18" width="6" height="6" fill="#FFFFFF"/>
-            </g>
-            <!-- R -->
-            <g transform="translate(72,0)">
-                <rect x="0" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="12" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="18" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="6" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="6" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="12" y="6" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="12" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="12" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="12" y="12" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="18" y="12" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="18" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="12" y="24" width="6" height="6" fill="#FFFFFF"/>
-            </g>
-            <!-- I -->
-            <g transform="translate(108,0)">
-                <rect x="6" y="0" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="6" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="12" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="18" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="24" width="6" height="6" fill="#FFFFFF"/>
-                <rect x="6" y="30" width="6" height="6" fill="#FFFFFF"/>
-            </g>
-            <!-- T -->
-            <g transform="translate(132,0)">
-                <rect x="0" y="0" width="36" height="6" fill="#FFFFFF"/>
-                <rect x="12" y="6" width="6" height="30" fill="#FFFFFF"/>
-            </g>
-            <!-- E -->
-            <g transform="translate(174,0)">
-                <rect x="0" y="0" width="30" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="6" width="6" height="36" fill="#FFFFFF"/>
-                <rect x="0" y="18" width="24" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="36" width="30" height="6" fill="#FFFFFF"/>
-            </g>
-            <!-- F -->
-            <g transform="translate(216,0)">
-                <rect x="0" y="0" width="30" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="6" width="6" height="36" fill="#FFFFFF"/>
-                <rect x="0" y="18" width="24" height="6" fill="#FFFFFF"/>
-            </g>
-            <!-- E (repeat) -->
-            <g transform="translate(258,0)">
-                <rect x="0" y="0" width="30" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="6" width="6" height="36" fill="#FFFFFF"/>
-                <rect x="0" y="18" width="24" height="6" fill="#FFFFFF"/>
-                <rect x="0" y="36" width="30" height="6" fill="#FFFFFF"/>
-            </g>
-            <!-- T (repeat) -->
-            <g transform="translate(300,0)">
-                <rect x="0" y="0" width="36" height="6" fill="#FFFFFF"/>
-                <rect x="12" y="6" width="6" height="30" fill="#FFFFFF"/>
-            </g>
-        </g>
 </svg>
 """
 
