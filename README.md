@@ -18,20 +18,6 @@ Use this template to place a screenshot of the web interface in the README:
 
 Replace `docs/ui-preview.png` with your actual screenshot path.
 
-## Project Layout
-
-```text
-SpriteFetch/
-├─ app.py
-├─ assets/
-│  └─ logo.svg
-├─ docs/
-│  └─ ui-preview.png
-├─ downloads/
-├─ requirements.txt
-└─ README.md
-```
-
 ## Requirements
 
 - Python 3.10+
@@ -49,7 +35,10 @@ pip install -r requirements.txt
 
 ## Quickstart
 
+Install the dependencies first, then launch the app:
+
 ```bash
+pip install -r requirements.txt
 streamlit run app.py
 ```
 
@@ -68,14 +57,16 @@ streamlit run app.py
 
 ## Production Readiness
 
-- **Status:** not fully production-ready yet.
-- **Why:** the app is usable, but it still depends on manual validation of target sites and local file handling.
-- **Recommended next steps:** add automated tests, centralized error handling, rate-limit protection, logging cleanup, and a deployment path.
+- **Status:** usable for local and internal workflows.
+- **Strengths:** simple setup, clear UI flow, and direct SVG export.
+- **Current gaps:** no automated test suite, limited validation for edge cases, and no deployment pipeline.
+- **Recommended next steps:** add integration tests, stronger error handling, rate-limit protection, and a deployment target.
 
 ## Notes
 
 - Make sure the target URL is valid and that the website allows asset scraping.
 - SVG output is stored in the `downloads/` folder.
+- For public deployment, review scraping policy, add authentication if needed, and confirm the target environment can handle file writes.
 
 ## License
 
