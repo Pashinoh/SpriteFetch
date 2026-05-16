@@ -12,15 +12,23 @@ jobs:
   publish:
     name: Create GitHub Release
     runs-on: ubuntu-latest
+    env:
+      # opt into Node.js 24 for JavaScript actions to avoid Node.js 20 deprecation warnings
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Create release and upload asset
-        uses: softprops/action-gh-release@v1
+      - name: Ensure release files exist
+        run: |
+          if [ ! -f "RELEASES/${{ github.event.inputs.tag }}.md" ]; then echo "Missing RELEASES/${{ github.event.inputs.tag }}.md"; exit 1; fi
+          if [ ! -f "releases/SpriteFetch-${{ github.event.inputs.tag }}.zip" ]; then echo "Missing releases/SpriteFetch-${{ github.event.inputs.tag }}.zip"; exit 1; fi
+
+      - name: Create GitHub release (peter-evans)
+        uses: peter-evans/create-release@v4
         with:
           tag_name: ${{ github.event.inputs.tag }}
-          name: ${{ github.event.inputs.tag }}
+          release_name: ${{ github.event.inputs.tag }}
           body_path: RELEASES/${{ github.event.inputs.tag }}.md
           files: releases/SpriteFetch-${{ github.event.inputs.tag }}.zip
         env:
