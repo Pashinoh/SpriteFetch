@@ -9,8 +9,9 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 OUT_DIR = os.path.join(ROOT, 'releases')
 OUT_NAME = 'SpriteFetch-v0.1.zip'
 
-EXCLUDE_DIRS = {'.git', '.venv', 'venv', '__pycache__', 'releases'}
+EXCLUDE_DIRS = {'.git', '.venv', 'venv', '__pycache__', 'releases', 'RELEASES', '.github', 'tools'}
 EXCLUDE_FILES = {'.pyc', '.pyo'}
+EXCLUDE_NAMES = {'.gitignore'}
 
 INCLUDE = {
     'app.py', 'README.md', 'requirements.txt', 'LICENSE'
@@ -26,6 +27,8 @@ def should_include(path):
         return True
     ext = os.path.splitext(path)[1]
     if ext in EXCLUDE_FILES:
+        return False
+    if os.path.basename(path) in EXCLUDE_NAMES:
         return False
     return True
 
