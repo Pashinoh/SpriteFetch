@@ -6,8 +6,6 @@
 
 Fetch images from web pages and convert them into SVG files.
 
-## Web Interface Preview
-
 <p align="center">
   <img src="docs/ui-preview.png" alt="SpriteFetch web interface preview" width="900" />
 </p>
@@ -16,12 +14,14 @@ The image above is the current UI preview for the app.
 
 ## Requirements
 
-- Python 3.10+
-- `streamlit`
-- `cloudscraper`
-- `beautifulsoup4`
-- `Pillow`
-- `requests`
+<p>
+  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+" />
+  <img src="https://img.shields.io/badge/Streamlit-1.20%2B-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit" />
+  <img src="https://img.shields.io/badge/Cloudscraper-1.2%2B-2E86C1?style=for-the-badge" alt="Cloudscraper" />
+  <img src="https://img.shields.io/badge/BeautifulSoup4-4.11%2B-6F42C1?style=for-the-badge" alt="BeautifulSoup4" />
+  <img src="https://img.shields.io/badge/Pillow-9.0%2B-8E44AD?style=for-the-badge" alt="Pillow" />
+  <img src="https://img.shields.io/badge/Requests-2.28%2B-28A745?style=for-the-badge" alt="Requests" />
+</p>
 
 Install everything with:
 
