@@ -6,6 +6,18 @@
 
 Fetch images from web pages and convert them into SVG files.
 
+## Table of Contents
+
+- [Web Interface Preview](#web-interface-preview)
+- [Requirements](#requirements)
+- [Quickstart](#quickstart)
+- [Features](#features)
+- [Usage](#usage)
+- [Production Readiness](#production-readiness)
+- [Notes](#notes)
+- [License](#license)
+- [Releases](#releases)
+
 ## Web Interface Preview
 
 Use this template to place a screenshot of the web interface in the README:
@@ -31,6 +43,12 @@ Install everything with:
 
 ```bash
 pip install -r requirements.txt
+```
+
+If you prefer, install only the runtime packages directly:
+
+```bash
+pip install streamlit cloudscraper beautifulsoup4 Pillow requests
 ```
 
 ## Quickstart
@@ -74,3 +92,15 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 - **Summary:** Initial public release.
 - **Tag:** [v0.1](https://github.com/Pashinoh/SpriteFetch/releases/tag/v0.1)
 - **Logo:** [logo.svg](logo.svg)
+
+## Project Structure
+
+```text
+SpriteFetch/
+├─ app.py
+├─ logo.svg
+├─ README.md
+├─ requirements.txt
+├─ downloads/
+└─ tools/
+```
