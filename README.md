@@ -1,5 +1,6 @@
 <p>
-  <img src="logo_combined_transparent.svg" height="64" style="vertical-align:middle;margin-right:12px" alt="SpriteFetch logo"/>
+  <img src="logo.svg" height="96" style="vertical-align:middle;margin-right:12px" alt="SpriteFetch logo"/>
+  <span style="font-size:36px;vertical-align:middle">SpriteFetch</span>
 </p>
 
 Fetch images from web pages and convert them to SVGs.
@@ -43,4 +44,12 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 
 ## Releases
 
-- v0.1 — Initial release (2026-05-16)
+### v0.1 — Initial release (2026-05-17)
+
+- **Summary:** Initial public release. Scan a target URL for images, preview and select assets, then convert chosen images to SVG and save them to the `downloads/` folder.
+- **Assets:** project logo is included at `logo.svg` (used in this README).
+- **Tag:** [v0.1](https://github.com/Pashinoh/SpriteFetch/releases/tag/v0.1)
+
+<p>
+  <img src="logo.svg" height="48" alt="SpriteFetch logo" />
+</p>
