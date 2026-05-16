@@ -44,3 +44,7 @@ logs/
 
 # Archives
 *.zip
+
+# Release artifacts
+releases/
+RELEASES/

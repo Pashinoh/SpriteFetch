@@ -9,7 +9,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 OUT_DIR = os.path.join(ROOT, 'releases')
 OUT_NAME = 'SpriteFetch-v0.1.zip'
 
-EXCLUDE_DIRS = {'.git', '.venv', 'venv', '__pycache__', 'releases', 'RELEASES', '.github', 'tools'}
+EXCLUDE_DIRS = {'.git', '.venv', 'venv', '__pycache__', 'releases', 'RELEASES', '.github', 'tools', 'docs'}
 EXCLUDE_FILES = {'.pyc', '.pyo'}
 EXCLUDE_NAMES = {'.gitignore'}
 
