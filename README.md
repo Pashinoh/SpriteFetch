@@ -1,7 +1,5 @@
-# SpriteFetch
-
 <p>
-  <img src="logo_combined.svg" height="64" style="vertical-align:middle;margin-right:12px" alt="SpriteFetch logo"/>
+  <img src="logo_text.svg" height="64" style="vertical-align:middle;margin-right:12px" alt="SpriteFetch logo"/>
 </p>
 
 Fetch images from web pages and convert them to SVGs.

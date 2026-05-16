@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="80" viewBox="0 0 420 80">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
+    .title { font-family: 'Silkscreen', VT323, monospace; font-weight:700; font-size:48px; fill:#000000; }
+  </style>
+  <text x="6" y="56" class="title">SPRITEFETCH</text>
+</svg>
