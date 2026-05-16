@@ -1,0 +1,8 @@
+# Minimal list of files/dirs to include in release ZIP
+# Keep only the essential runtime files and shipped assets.
+README.md
+LICENSE
+app.py
+requirements.txt
+assets/logo.svg
+docs/ui-preview.png
