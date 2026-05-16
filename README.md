@@ -71,11 +71,3 @@ streamlit run app.py
 ## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
-## Releases
-
-### v0.1 — Initial release (2026-05-17)
-
-- **Summary:** Initial public release.
-- **Tag:** [v0.1](https://github.com/Pashinoh/SpriteFetch/releases/tag/v0.1)
-- **Logo:** [assets/logo.svg](assets/logo.svg)
