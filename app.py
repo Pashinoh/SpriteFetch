@@ -313,7 +313,7 @@ svg_logo = """
         <path d="M6 5H8V7H6V5Z" fill="#FF2400"/>
         <path d="M9 6H10V7H9V6Z" fill="#FF2400"/>
     </svg>
-    <text x="82" y="48" font-family="Silkscreen, VT323, monospace" font-size="28" fill="#000000" style="font-weight:700;">SpriteFetch</text>
+    <text x="82" y="48" font-family="Silkscreen, VT323, monospace" font-size="28" fill="#FFFFFF" style="font-weight:700;">SpriteFetch</text>
 </svg>
 """
 

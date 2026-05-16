@@ -12,5 +12,5 @@
   </svg>
 
   <!-- Title text, keep mixed-case -->
-  <text x="82" y="48" font-family="Silkscreen, VT323, monospace" font-size="36" fill="#000000" style="font-weight:700;">SpriteFetch</text>
+  <text x="82" y="48" font-family="Silkscreen, VT323, monospace" font-size="36" fill="#FFFFFF" style="font-weight:700;">SpriteFetch</text>
 </svg>
