@@ -303,14 +303,17 @@ st.markdown("""
 
 # 8-Bit Pixel Folder SVG Logo
 svg_logo = """
-<svg width="68" height="68" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M2 3H6V4H8V5H14V13H2V3Z" fill="#000000"/>
-    <path d="M3 4H5V5H7V6H13V12H3V4Z" fill="#FFDE00"/>
-    <path d="M1 7H15V14H1V7Z" fill="#000000"/>
-    <path d="M2 8H14V13H2V8Z" fill="#FFAA00"/>
-    <path d="M5 4H11V8H5V4Z" fill="#FFFFFF"/>
-    <path d="M6 5H8V7H6V5Z" fill="#FF2400"/>
-    <path d="M9 6H10V7H9V6Z" fill="#FF2400"/>
+<svg width="240" height="64" viewBox="0 0 320 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg x="0" y="0" width="64" height="64" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 3H6V4H8V5H14V13H2V3Z" fill="#000000"/>
+        <path d="M3 4H5V5H7V6H13V12H3V4Z" fill="#FFDE00"/>
+        <path d="M1 7H15V14H1V7Z" fill="#000000"/>
+        <path d="M2 8H14V13H2V8Z" fill="#FFAA00"/>
+        <path d="M5 4H11V8H5V4Z" fill="#FFFFFF"/>
+        <path d="M6 5H8V7H6V5Z" fill="#FF2400"/>
+        <path d="M9 6H10V7H9V6Z" fill="#FF2400"/>
+    </svg>
+    <text x="82" y="48" font-family="Silkscreen, VT323, monospace" font-size="28" fill="#000000" style="font-weight:700;">SpriteFetch</text>
 </svg>
 """
 
