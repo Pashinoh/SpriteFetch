@@ -29,6 +29,7 @@ htmlcov/
 .vscode/
 .idea/
 *.sublime-workspace
+*.code-workspace
 .github/
 
 # OS files

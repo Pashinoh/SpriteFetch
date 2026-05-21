@@ -1,0 +1,34 @@
+# Streamlit Configuration for SpriteFetch
+# This file optimizes the app for cloud deployment and user experience
+
+[theme]
+primaryColor = "#2D68FF"
+backgroundColor = "#FAFAFA"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#000000"
+font = "monospace"
+
+[client]
+showErrorDetails = false
+showWarningOnDirectExecution = false
+
+[logger]
+level = "error"
+
+[server]
+port = 8501
+headless = true
+maxUploadSize = 200
+
+[browser]
+gatherUsageStats = false
+serverAddress = "localhost"
+
+# Optimization for faster load times
+[client.toolbarMode]
+toolbarMode = "minimal"
+
+# Cache settings for better performance
+[cache]
+maxEntries = 1000
+cachedMessageExpirationSeconds = 3600

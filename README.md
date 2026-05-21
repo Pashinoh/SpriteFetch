@@ -15,10 +15,14 @@ Fetch images from web pages and convert them into SVG files.
 </p>
 
 <p align="center">
-  <img src="docs/ui-preview.png" alt="SpriteFetch web interface preview" width="900" />
+   <img src="docs/ui-preview.png" alt="SpriteFetch UI preview (main)" width="900" />
+</p>
+<p align="center">
+   <img src="docs/ui-preview.png" alt="SpriteFetch UI preview (detail 1)" width="440" />
+   <img src="docs/ui-preview.png" alt="SpriteFetch UI preview (detail 2)" width="440" />
 </p>
 
-The image above is the current UI preview for the app.
+The images above show the current UI preview for the app.
 
 ## Quickstart
 
@@ -31,22 +35,42 @@ streamlit run app.py
 
 ## Features
 
-- Scan a target URL for images
-- Preview and select assets to convert
-- Convert selected images into SVG
+- **Web Scraping**: Scan target URLs for all images including lazy-loaded assets
+- **Asset Preview & Selection**: Interactive grid preview with bulk select/deselect options
+- **Multi-Format Conversion**: Convert images to SVG, PNG, JPG, or WEBP formats
+- **Batch Processing**: Convert multiple assets at once with ZIP bundling
+- **Smart Filtering**: Optional keyword filtering to narrow down asset search
+- **Cloudflare Bypass**: Automatic detection and bypass of Cloudflare protection
 
 ## Usage
 
-1. Open the app in your browser.
-2. Enter the target page URL in the `TARGET URL` field.
-3. Click `SCAN TARGET`.
-4. Preview the assets, select the ones you want, then click `PROCESS SELECTED`.
+1. **Launch the Application**:
+   - Open the app in your browser after running `streamlit run app.py`
+
+2. **Scan Target**:
+   - Enter the target page URL in the `TARGET URL` field
+   - Optionally, add a comma-separated keyword filter (e.g., `logo, icon, background`) to narrow down results
+   - Click `SCAN TARGET` to fetch and preview all images
+
+3. **Select Assets**:
+   - Preview images in an interactive grid
+   - Use the `SELECT / DESELECT ALL ASSETS` checkbox for quick bulk selection
+   - Individually check/uncheck specific assets
+   - Choose your desired output format (SVG, PNG, JPG, WEBP)
+
+4. **Process & Download**:
+   - Click `PROCESS SELECTED` to convert assets
+   - Single images download directly
+   - Multiple images are bundled into a ZIP file
+   - Click `DOWNLOAD ASSET` or `DOWNLOAD .ZIP` to save
 
 ## Notes
 
-- Make sure the target URL is valid and that the website allows asset scraping.
-- SVG output is stored in the `downloads/` folder.
-- For public deployment, review scraping policy, add authentication if needed, and confirm the target environment can handle file writes.
+- **Valid URLs Required**: Ensure the target URL is valid and publicly accessible
+- **Scraping Compliance**: Respect website terms of service and robots.txt policies
+- **Output Storage**: Downloaded files are stored in the `downloads/` folder
+- **Authentication**: For protected websites, consider adding custom headers or authentication cookies if needed
+- **Performance**: Large image collections may take time to process; be patient during the scanning and conversion phases
 
 ## License
 
