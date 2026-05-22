@@ -4,7 +4,7 @@
 
 # SpriteFetch
 
-Fetch images from web pages and convert them to SVGs.
+SpriteFetch scans web pages for images, lets you preview/select assets, and exports them in multiple formats (SVG, PNG, JPG, WEBP) for easy download and reuse.
 <p>
   <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+" />
   <img src="https://img.shields.io/badge/Streamlit-1.20%2B-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit" />
@@ -38,6 +38,22 @@ Install the dependencies first, then launch the app:
 pip install -r requirements.txt
 streamlit run app.py
 ```
+
+## Local virtual environment
+
+Create and activate a local virtual environment before installing dependencies:
+
+```bash
+python -m venv .venv
+# macOS / Linux
+source .venv/bin/activate
+# Windows (PowerShell)
+.venv\\Scripts\\Activate.ps1
+# Install dependencies inside the venv
+pip install -r requirements.txt
+```
+
+Note: Do not commit the `.venv` directory to the repository. Keep it local and add it to `.gitignore` if needed.
 
 ## Features
 
@@ -81,15 +97,3 @@ streamlit run app.py
 ## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
-## About
-
-Write your project "About" text here. This section is reserved for a short, personal description of the project, goals, and usage notes. Edit this to add your own voice and links.
-
-## Tags
-
-- web-scraping
-- streamlit
-- svg
-- image-processing
-- python
