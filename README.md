@@ -5,6 +5,9 @@
 # SpriteFetch
 
 SpriteFetch scans web pages for images, lets you preview/select assets, and exports them in multiple formats (SVG, PNG, JPG, WEBP) for easy download and reuse.
+
+[![Demo](https://img.shields.io/badge/Demo-Open-blue?style=for-the-badge)](https://spritefetch.streamlit.app)  
+
 <p>
   <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+" />
   <img src="https://img.shields.io/badge/Streamlit-1.20%2B-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit" />
