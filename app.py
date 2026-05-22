@@ -122,12 +122,42 @@ def robust_fetch(url, timeout=15):
         return CachedResponse()
 
     host = urlparse(url).netloc
+    # Host denylist: common hosts that block scraper/cloudscraper or are rate-limited on shared cloudhosts
+    DENYLIST_HOSTS = [
+        "fandom.com",
+        "wikia.com",
+        "static.wikia",
+        "vignette.wikia",
+        "cdn.discordapp.com",
+        "i.redd.it",
+    ]
+    # quick contains check
+    try:
+        lowered = host.lower()
+        for bad in DENYLIST_HOSTS:
+            if bad in lowered:
+                errs = st.session_state.setdefault('fetch_errors_seen', {})
+                key = f"deny:{bad}"
+                if errs.get(key, 0) < 1:
+                    logging.getLogger('spritefetch').warning(f"robust_fetch: host '{host}' matched denylist '{bad}', skipping fetch for {url}")
+                errs[key] = errs.get(key, 0) + 1
+                class DummyResponseDenied:
+                    status_code = 403
+                    text = 'Denied by host denylist'
+                    content = b""
+                return DummyResponseDenied()
+    except Exception:
+        pass
     try:
         last_ts = st.session_state.get('fetch_timestamps', {}).get(host, 0)
     except Exception:
         last_ts = 0
 
-    min_interval = 0.5  # seconds between requests to same host
+    # seconds between requests to same host (can be overridden by UI sidebar)
+    try:
+        min_interval = float(st.session_state.get('ui_min_interval', 0.5))
+    except Exception:
+        min_interval = 0.5
     elapsed = time.time() - last_ts
     if elapsed < min_interval:
         time.sleep(min_interval - elapsed)
@@ -684,6 +714,19 @@ svg_logo = """
 </svg>
 """
 
+# ------------------------------------------
+# Sidebar controls for throttling and previews
+# ------------------------------------------
+with st.sidebar:
+    st.header("Fetch / Preview")
+    min_interval_input = st.number_input("Min interval per host (s)", min_value=0.0, max_value=10.0, value=0.5, step=0.1, help="Minimum seconds between requests to the same host to reduce rate-limiting")
+    max_preview_fetches_input = st.number_input("Max preview fetches", min_value=1, max_value=200, value=30, step=1, help="Maximum number of image fetches during preview to avoid aggressive scraping")
+    st.markdown("---")
+
+# Persist UI controls into session_state for use in fetch logic
+st.session_state['ui_min_interval'] = float(min_interval_input)
+st.session_state['ui_max_preview_fetches'] = int(max_preview_fetches_input)
+
 # Render Header (Hidden during loading phases)
 if st.session_state.step not in ['scanning', 'processing']:
     st.markdown(
@@ -733,7 +776,12 @@ elif st.session_state.step == 'scanning':
             st.rerun()
         else:
             soup = BeautifulSoup(response.text, 'html.parser')
-            discovered_assets = extract_image_urls(soup, st.session_state.target_url)
+                discovered_assets = extract_image_urls(soup, st.session_state.target_url)
+            # Respect UI max preview fetches
+            try:
+                max_preview_fetches = int(st.session_state.get('ui_max_preview_fetches', 30))
+            except Exception:
+                max_preview_fetches = 30
             
             # Filter assets if keywords are provided
             if st.session_state.keyword:
@@ -753,9 +801,9 @@ elif st.session_state.step == 'scanning':
                 st.rerun()
             else:
                 st.session_state.scraped_assets = []
-                total_assets = len(discovered_assets)
+                total_assets = min(len(discovered_assets), max_preview_fetches)
                 
-                for index, (asset_url, extension) in enumerate(discovered_assets):
+                for index, (asset_url, extension) in enumerate(discovered_assets[:max_preview_fetches]):
                     pct = int((index + 1) / total_assets * 100)
                     bar = "█" * (pct // 5) + "-" * (20 - (pct // 5))
                     status_box.markdown(f"""
