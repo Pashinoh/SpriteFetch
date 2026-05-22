@@ -32,9 +32,19 @@ The images above show the current UI preview for the app.
 
 ## Quickstart
 
-Install the dependencies first, then launch the app:
+Create and activate a local virtual environment, install dependencies, then launch the app:
 
 ```bash
+# Create venv
+python -m venv .venv
+
+# macOS / Linux
+source .venv/bin/activate
+
+# Windows (PowerShell)
+.venv\\Scripts\\Activate.ps1
+
+# Install dependencies and run
 pip install -r requirements.txt
 streamlit run app.py
 ```
