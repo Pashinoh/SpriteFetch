@@ -96,26 +96,37 @@ if 'download_mime' not in st.session_state:
 # ==========================================
 def robust_fetch(url, timeout=15):
     """Multi-layered scraper to bypass Cloudflare and Datacenter IP blocks"""
+    # Build a friendly header set; some hosts reject default python UA
+    base_headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://www.google.com/",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1"
+    }
+
+    # Try cloudscraper first (handles common Cloudflare protections)
     try:
-        scraper = cloudscraper.create_scraper(browser={'browser': 'chrome', 'platform': 'windows', 'desktop': True})
-        res = scraper.get(url, timeout=timeout)
-        if res.status_code == 200:
+        scraper = cloudscraper.create_scraper(browser={"browser": "chrome", "platform": "windows", "desktop": True})
+        res = scraper.get(url, headers=base_headers, timeout=timeout, allow_redirects=True)
+        if res is not None and getattr(res, 'status_code', None) == 200:
             return res
-    except:
-        pass
-        
+        logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned {getattr(res, 'status_code', None)} for {url}")
+    except Exception as e:
+        logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper error for {url}: {e}")
+
+    # Fallback: plain requests with a slightly different header set
     try:
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-            "Accept-Language": "en-US,en;q=0.9",
-            "Referer": "https://www.google.com/",
-            "Connection": "keep-alive",
-            "Upgrade-Insecure-Requests": "1"
-        }
-        res = requests.get(url, headers=headers, timeout=timeout)
+        headers = base_headers.copy()
+        # Add some headers that sometimes help with basic bot checks
+        headers.update({"X-Requested-With": "XMLHttpRequest", "DNT": "1"})
+        res = requests.get(url, headers=headers, timeout=timeout, allow_redirects=True)
+        if getattr(res, 'status_code', None) != 200:
+            logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned {getattr(res, 'status_code', None)} for {url}; headers used: {headers}")
         return res
     except Exception as e:
+        logging.getLogger('spritefetch').error(f"robust_fetch: requests exception for {url}: {e}")
         class DummyResponse:
             status_code = 500
             text = str(e)
