@@ -106,157 +106,32 @@ def robust_fetch(url, timeout=15):
         "Upgrade-Insecure-Requests": "1"
     }
 
-    # Initialize session cache and per-host timestamps
+    # Try cloudscraper first (handles common Cloudflare protections)
     try:
-        cache = st.session_state.get('fetch_cache', {})
-    except Exception:
-        cache = {}
+        scraper = cloudscraper.create_scraper(browser={"browser": "chrome", "platform": "windows", "desktop": True})
+        res = scraper.get(url, headers=base_headers, timeout=timeout, allow_redirects=True)
+        if res is not None and getattr(res, 'status_code', None) == 200:
+            return res
+        logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned {getattr(res, 'status_code', None)} for {url}")
+    except Exception as e:
+        logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper error for {url}: {e}")
 
-    # Return cached 200 responses immediately
-    if url in cache:
-        cached = cache[url]
-        class CachedResponse:
-            status_code = cached.get('status_code', 200)
-            text = cached.get('text', '')
-            content = cached.get('content', b"")
-        return CachedResponse()
-
-    host = urlparse(url).netloc
-    # Host denylist: common hosts that block scraper/cloudscraper or are rate-limited on shared cloudhosts
-    DENYLIST_HOSTS = [
-        "fandom.com",
-        "wikia.com",
-        "static.wikia",
-        "vignette.wikia",
-        "cdn.discordapp.com",
-        "i.redd.it",
-    ]
-    # quick contains check
+    # Fallback: plain requests with a slightly different header set
     try:
-        lowered = host.lower()
-        for bad in DENYLIST_HOSTS:
-            if bad in lowered:
-                errs = st.session_state.setdefault('fetch_errors_seen', {})
-                key = f"deny:{bad}"
-                if errs.get(key, 0) < 1:
-                    logging.getLogger('spritefetch').warning(f"robust_fetch: host '{host}' matched denylist '{bad}', skipping fetch for {url}")
-                errs[key] = errs.get(key, 0) + 1
-                class DummyResponseDenied:
-                    status_code = 403
-                    text = 'Denied by host denylist'
-                    content = b""
-                return DummyResponseDenied()
-    except Exception:
-        pass
-    try:
-        last_ts = st.session_state.get('fetch_timestamps', {}).get(host, 0)
-    except Exception:
-        last_ts = 0
-
-    # seconds between requests to same host (can be overridden by UI sidebar)
-    try:
-        min_interval = float(st.session_state.get('ui_min_interval', 0.5))
-    except Exception:
-        min_interval = 0.5
-    elapsed = time.time() - last_ts
-    if elapsed < min_interval:
-        time.sleep(min_interval - elapsed)
-
-    max_retries = 3
-    backoff = 1.5
-
-    for attempt in range(1, max_retries + 1):
-        # Try cloudscraper first
-        try:
-            scraper = cloudscraper.create_scraper(browser={"browser": "chrome", "platform": "windows", "desktop": True})
-            res = scraper.get(url, headers=base_headers, timeout=timeout, allow_redirects=True)
-            code = getattr(res, 'status_code', None)
-            if code == 200:
-                # cache the successful bytes
-                try:
-                    st.session_state.setdefault('fetch_cache', {})[url] = {'status_code': 200, 'content': res.content, 'text': res.text}
-                except Exception:
-                    pass
-                st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
-                return res
-            elif code == 403:
-                # Forbidden — don't retry. Log once to avoid spam.
-                errs = st.session_state.setdefault('fetch_errors_seen', {})
-                if errs.get(url, 0) < 1:
-                    logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned 403 for {url}")
-                errs[url] = errs.get(url, 0) + 1
-                class DummyResponse403:
-                    status_code = 403
-                    text = 'Forbidden'
-                    content = b""
-                st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
-                return DummyResponse403()
-            elif code == 429:
-                # Rate limited — retry with backoff
-                errs = st.session_state.setdefault('fetch_errors_seen', {})
-                if errs.get(url, 0) < 2:
-                    logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned 429 for {url}")
-                errs[url] = errs.get(url, 0) + 1
-                wait = backoff ** attempt
-                time.sleep(wait)
-                continue
-            else:
-                errs = st.session_state.setdefault('fetch_errors_seen', {})
-                if errs.get(url, 0) < 1:
-                    logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned {code} for {url}")
-                errs[url] = errs.get(url, 0) + 1
-        except Exception as e:
-            logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper error for {url}: {e}")
-
-        # Fallback to requests
-        try:
-            headers = base_headers.copy()
-            headers.update({"X-Requested-With": "XMLHttpRequest", "DNT": "1"})
-            res = requests.get(url, headers=headers, timeout=timeout, allow_redirects=True)
-            code = getattr(res, 'status_code', None)
-            if code == 200:
-                try:
-                    st.session_state.setdefault('fetch_cache', {})[url] = {'status_code': 200, 'content': res.content, 'text': res.text}
-                except Exception:
-                    pass
-                st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
-                return res
-            elif code == 403:
-                errs = st.session_state.setdefault('fetch_errors_seen', {})
-                if errs.get(url, 0) < 1:
-                    logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned 403 for {url}; headers used: {headers}")
-                errs[url] = errs.get(url, 0) + 1
-                class DummyResponse403Req:
-                    status_code = 403
-                    text = 'Forbidden'
-                    content = b""
-                st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
-                return DummyResponse403Req()
-            elif code == 429:
-                errs = st.session_state.setdefault('fetch_errors_seen', {})
-                if errs.get(url, 0) < 2:
-                    logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned 429 for {url}; headers used: {headers}")
-                errs[url] = errs.get(url, 0) + 1
-                wait = backoff ** attempt
-                time.sleep(wait)
-                continue
-            else:
-                errs = st.session_state.setdefault('fetch_errors_seen', {})
-                if errs.get(url, 0) < 1:
-                    logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned {code} for {url}; headers used: {headers}")
-                errs[url] = errs.get(url, 0) + 1
-                st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
-                return res
-        except Exception as e:
-            logging.getLogger('spritefetch').error(f"robust_fetch: requests exception for {url}: {e}")
-            time.sleep(backoff ** attempt)
-
-    # All retries exhausted
-    class DummyResponse:
-        status_code = 429
-        text = "Too Many Requests"
-        content = b""
-    return DummyResponse()
+        headers = base_headers.copy()
+        # Add some headers that sometimes help with basic bot checks
+        headers.update({"X-Requested-With": "XMLHttpRequest", "DNT": "1"})
+        res = requests.get(url, headers=headers, timeout=timeout, allow_redirects=True)
+        if getattr(res, 'status_code', None) != 200:
+            logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned {getattr(res, 'status_code', None)} for {url}; headers used: {headers}")
+        return res
+    except Exception as e:
+        logging.getLogger('spritefetch').error(f"robust_fetch: requests exception for {url}: {e}")
+        class DummyResponse:
+            status_code = 500
+            text = str(e)
+            content = b""
+        return DummyResponse()
 
 def convert_to_embedded_svg(img_bytes: bytes, original_format: str) -> bytes:
     """Wraps raster bytes into a scalable SVG vector container"""
@@ -714,19 +589,6 @@ svg_logo = """
 </svg>
 """
 
-# ------------------------------------------
-# Sidebar controls for throttling and previews
-# ------------------------------------------
-with st.sidebar:
-    st.header("Fetch / Preview")
-    min_interval_input = st.number_input("Min interval per host (s)", min_value=0.0, max_value=10.0, value=0.5, step=0.1, help="Minimum seconds between requests to the same host to reduce rate-limiting")
-    max_preview_fetches_input = st.number_input("Max preview fetches", min_value=1, max_value=200, value=30, step=1, help="Maximum number of image fetches during preview to avoid aggressive scraping")
-    st.markdown("---")
-
-# Persist UI controls into session_state for use in fetch logic
-st.session_state['ui_min_interval'] = float(min_interval_input)
-st.session_state['ui_max_preview_fetches'] = int(max_preview_fetches_input)
-
 # Render Header (Hidden during loading phases)
 if st.session_state.step not in ['scanning', 'processing']:
     st.markdown(
@@ -776,12 +638,7 @@ elif st.session_state.step == 'scanning':
             st.rerun()
         else:
             soup = BeautifulSoup(response.text, 'html.parser')
-                discovered_assets = extract_image_urls(soup, st.session_state.target_url)
-            # Respect UI max preview fetches
-            try:
-                max_preview_fetches = int(st.session_state.get('ui_max_preview_fetches', 30))
-            except Exception:
-                max_preview_fetches = 30
+            discovered_assets = extract_image_urls(soup, st.session_state.target_url)
             
             # Filter assets if keywords are provided
             if st.session_state.keyword:
@@ -801,9 +658,9 @@ elif st.session_state.step == 'scanning':
                 st.rerun()
             else:
                 st.session_state.scraped_assets = []
-                total_assets = min(len(discovered_assets), max_preview_fetches)
+                total_assets = len(discovered_assets)
                 
-                for index, (asset_url, extension) in enumerate(discovered_assets[:max_preview_fetches]):
+                for index, (asset_url, extension) in enumerate(discovered_assets):
                     pct = int((index + 1) / total_assets * 100)
                     bar = "█" * (pct // 5) + "-" * (20 - (pct // 5))
                     status_box.markdown(f"""
