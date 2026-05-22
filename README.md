@@ -37,7 +37,6 @@ Create and activate a local virtual environment, install dependencies, then laun
 ```bash
 # Create venv
 
-
 python -m venv .venv
 # macOS / Linux
 source .venv/bin/activate
