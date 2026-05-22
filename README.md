@@ -36,22 +36,6 @@ Create and activate a local virtual environment, install dependencies, then laun
 
 ```bash
 # Create venv
-python -m venv .venv
-
-# macOS / Linux
-source .venv/bin/activate
-
-# Windows (PowerShell)
-.venv\\Scripts\\Activate.ps1
-
-# Install dependencies and run
-pip install -r requirements.txt
-streamlit run app.py
-```
-
-## Local virtual environment
-
-Create and activate a local virtual environment before installing dependencies:
 
 ```bash
 python -m venv .venv
