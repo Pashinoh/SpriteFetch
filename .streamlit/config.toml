@@ -2,7 +2,7 @@
 # This file optimizes the app for cloud deployment and user experience
 
 [theme]
-primaryColor = "#2D68FF"
+primaryColor = "#F16D34"
 backgroundColor = "#FAFAFA"
 secondaryBackgroundColor = "#FFFFFF"
 textColor = "#000000"
@@ -10,7 +10,7 @@ font = "monospace"
 
 [client]
 showErrorDetails = false
-showWarningOnDirectExecution = false
+toolbarMode = "minimal"
 
 [logger]
 level = "error"
@@ -24,11 +24,4 @@ maxUploadSize = 200
 gatherUsageStats = false
 serverAddress = "localhost"
 
-# Optimization for faster load times
-[client.toolbarMode]
-toolbarMode = "minimal"
 
-# Cache settings for better performance
-[cache]
-maxEntries = 1000
-cachedMessageExpirationSeconds = 3600

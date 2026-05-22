@@ -270,8 +270,24 @@ st.markdown(f"""
         }}
         
         .st-emotion-cache-1jicfl2, .st-emotion-cache-1104q3j {{ padding: 0px !important; }}
-        
-        .header-container {{
+                @media (max-width: 768px) {{
+            .block-container {{ 
+                padding: 1.5rem !important; 
+                margin-top: 1rem !important; 
+                margin-bottom: 1rem !important;
+                box-shadow: 6px 6px 0px {shadow_color} !important;
+            }}
+            .pixel-title {{ font-size: 2.2rem !important; }}
+            .header-container {{ padding-bottom: 1rem; margin-bottom: 1rem; }}
+            .stTextInput>div>div>input {{ height: 48px !important; font-size: 1.2rem !important; }}
+            button[kind="primary"], button[kind="primaryFormSubmit"], 
+            button[kind="secondary"], button[kind="secondaryFormSubmit"], 
+            .stDownloadButton>button {{
+                height: 48px !important;
+                font-size: 1rem !important;
+            }}
+        }}
+                .header-container {{
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -359,6 +375,23 @@ st.markdown(f"""
             line-height: normal !important; 
         }}
 
+        /* Make custom block wrapper for selectbox invisible */
+        div[data-testid="stSelectbox"] {{
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+        }}
+
+        /* -------------------------------------- */
+        /* FORM FIX (NO INNER BORDER)             */
+        /* -------------------------------------- */
+        div[data-testid="stForm"] {{
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }}
+
         /* -------------------------------------- */
         /* IMAGE PREVIEW FIX                      */
         /* -------------------------------------- */
@@ -367,11 +400,46 @@ st.markdown(f"""
             box-shadow: 4px 4px 0px {shadow_color} !important;
             margin-bottom: 0.5rem;
             background-color: {img_bg};
+            border-radius: 0px !important;
+            display: flex !important;
+            justify-content: center !important;
         }}
         [data-testid="stImage"] img {{
             border: none !important;
             box-shadow: none !important;
             background-color: transparent !important;
+            border-radius: 0px !important;
+        }}
+
+        /* -------------------------------------- */
+        /* FULLSCREEN IMAGE FIX                   */
+        /* -------------------------------------- */
+        div[role="dialog"] {{
+            background-color: rgba(0, 0, 0, 0.5) !important;
+        }}
+        div[role="dialog"] [data-testid="stImage"] {{
+            border: none !important;
+            box-shadow: none !important;
+            background-color: transparent !important;
+        }}
+        div[role="dialog"] img {{
+            border: 6px solid {border_color} !important;
+            box-shadow: 12px 12px 0px {shadow_color} !important;
+            background-color: {container_bg} !important;
+            max-width: 80vw !important;
+            max-height: 80vh !important;
+            object-fit: contain !important;
+            margin: auto !important;
+        }}
+        /* Remove thin border/rounding around the preview container */
+        .preview-grid div[data-testid="stContainer"],
+        .preview-grid div[data-testid="stContainer"] > div,
+        .preview-grid div[data-testid="stVerticalBlock"] {{
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            border-radius: 0px !important;
+            background: transparent !important;
         }}
         [data-testid="StyledFullScreenButton"] {{
             right: 5px !important;
@@ -385,7 +453,7 @@ st.markdown(f"""
         button[kind="primary"], button[kind="primaryFormSubmit"] {{
             font-family: 'Silkscreen', sans-serif !important;
             font-size: 1.1rem !important;
-            background-color: #2D68FF !important; 
+            background-color: #F16D34 !important; 
             color: #FFFFFF !important;
             border: 4px solid {border_color} !important;
             border-radius: 0px !important;
@@ -395,7 +463,7 @@ st.markdown(f"""
             transition: all 0.1s ease;
             margin: 0px !important; 
         }}
-        button[kind="primary"]:hover, button[kind="primaryFormSubmit"]:hover {{ background-color: #1A4BCC !important; }}
+        button[kind="primary"]:hover, button[kind="primaryFormSubmit"]:hover {{ background-color: #D65E2C !important; }}
         button[kind="primary"]:active, button[kind="primaryFormSubmit"]:active {{
             transform: translate(6px, 6px);
             box-shadow: 0px 0px 0px {shadow_color} !important;
@@ -404,8 +472,8 @@ st.markdown(f"""
         .stDownloadButton>button {{
             font-family: 'Silkscreen', sans-serif !important;
             font-size: 1.1rem !important;
-            background-color: #FFDE00 !important; 
-            color: #000000 !important;
+            background-color: #F16D34 !important; 
+            color: #FFFFFF !important;
             border: 4px solid {border_color} !important;
             border-radius: 0px !important;
             height: 56px !important;
@@ -414,7 +482,7 @@ st.markdown(f"""
             transition: all 0.1s ease;
             margin: 0px !important; 
         }}
-        .stDownloadButton>button:hover {{ background-color: #E5C700 !important; }}
+        .stDownloadButton>button:hover {{ background-color: #D65E2C !important; }}
         .stDownloadButton>button:active {{
             transform: translate(6px, 6px);
             box-shadow: 0px 0px 0px {shadow_color} !important;
@@ -484,7 +552,7 @@ st.markdown(f"""
         hr {{ display: none; }}
 
         .loading-box {{
-            background-color: #2D68FF; 
+            background-color: #F16D34; 
             color: #FFFFFF;
             border: 4px solid {border_color};
             box-shadow: 10px 10px 0px {shadow_color};
@@ -494,7 +562,7 @@ st.markdown(f"""
             margin: 2rem auto;
         }}
         .box-error {{ background-color: #FF2400; }}
-        .box-warning {{ background-color: #FFDE00; color: #000000; }}
+        .box-warning {{ background-color: #F16D34; color: #FFFFFF; }}
     </style>
 """, unsafe_allow_html=True)
 
@@ -533,7 +601,7 @@ if st.session_state.step == 'input':
     
     if st.button("SCAN TARGET", type="primary", use_container_width=True):
         if not url_input or url_input == "https://":
-            st.toast("SYSTEM ERROR: INVALID URL", icon="👾")
+            st.toast("SYSTEM ERROR: INVALID URL")
         else:
             st.session_state.target_url = url_input
             st.session_state.keyword = keyword_input
@@ -640,19 +708,22 @@ elif st.session_state.step == 'select':
     st.write("")
     
     with st.form("selection_form"):
+        st.markdown("<div class='preview-grid'>", unsafe_allow_html=True)
         with st.container(height=380):
             # SPACER: Memastikan tombol fullscreen tidak terpotong container atas
             st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
             
-            cols = st.columns(5)
+            cols = st.columns(4)
             for i, asset in enumerate(st.session_state.scraped_assets):
-                with cols[i % 5]:
+                with cols[i % 4]:
                     try:
+                        # Ensures images fit their columns responsively
                         st.image(asset['bytes'], use_container_width=True)
                     except:
                         st.write("[ERROR]")
                     val = st.session_state.get(f"chk_{i}", True)
                     st.checkbox(f"#{i+1}", value=val, key=f"chk_{i}")
+                st.markdown("</div>", unsafe_allow_html=True)
                     
         st.write("") 
         
@@ -670,7 +741,7 @@ elif st.session_state.step == 'select':
     if process_btn:
         selected_indices = [i for i in range(len(st.session_state.scraped_assets)) if st.session_state[f"chk_{i}"]]
         if not selected_indices:
-            st.toast("ERROR: NO ASSETS SELECTED", icon="🛑")
+            st.toast("ERROR: NO ASSETS SELECTED")
         else:
             st.session_state.selected_assets = selected_indices
             st.session_state.step = 'processing'
@@ -797,7 +868,7 @@ elif st.session_state.step == 'processing':
 # ----------------- PHASE 5: RESULT & DOWNLOAD -----------------
 elif st.session_state.step == 'result':
     st.markdown(f"""
-        <div style="background-color: #00FF41; color: #000000; border: 4px solid #000000; padding: 15px; font-size: 1.8rem; text-align: center; box-shadow: 6px 6px 0px #000000; margin-bottom: 2rem;">
+        <div style="background-color: #F16D34; color: #FFFFFF; border: 4px solid #000000; padding: 15px; font-size: 1.8rem; text-align: center; box-shadow: 6px 6px 0px #000000; margin-bottom: 2rem;">
             <b>STAGE CLEARED!</b><br>{st.session_state.success_count} SPRITES PROCESSED AS {st.session_state.output_format}.
         </div>
     """, unsafe_allow_html=True)

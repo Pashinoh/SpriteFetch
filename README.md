@@ -15,12 +15,18 @@ Fetch images from web pages and convert them into SVG files.
 </p>
 
 <p align="center">
-   <img src="docs/ui-preview.png" alt="SpriteFetch UI preview (main)" width="900" />
+   <img src="docs/ui-preview-1.png" alt="SpriteFetch UI preview (main)" width="900" />
 </p>
-<p align="center">
-   <img src="docs/ui-preview.png" alt="SpriteFetch UI preview (detail 1)" width="440" />
-   <img src="docs/ui-preview.png" alt="SpriteFetch UI preview (detail 2)" width="440" />
-</p>
+<table align="center">
+   <tr>
+      <td align="center">
+         <img src="docs/ui-preview-2.png" alt="SpriteFetch UI preview (detail 1)" width="440" />
+      </td>
+      <td align="center">
+         <img src="docs/ui-preview-3.png" alt="SpriteFetch UI preview (detail 2)" width="440" />
+      </td>
+   </tr>
+</table>
 
 The images above show the current UI preview for the app.
 
