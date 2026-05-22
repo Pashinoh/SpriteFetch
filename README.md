@@ -4,22 +4,7 @@
 
 # SpriteFetch
 
-SpriteFetch
-
-Fetch images from web pages and convert them into scalable SVG wrappers or common raster formats. Designed for fast asset discovery, interactive preview, and bulk export with a retro pixel-art UI.
-
-<!-- Topic badges -->
-<p>
-   <img src="https://img.shields.io/badge/topic-image--scraper-blue?style=for-the-badge" alt="image-scraper" />
-   <img src="https://img.shields.io/badge/topic-svg-orange?style=for-the-badge" alt="svg" />
-   <img src="https://img.shields.io/badge/topic-streamlit-FF4B4B?style=for-the-badge" alt="streamlit" />
-   <img src="https://img.shields.io/badge/topic-python-3776AB?style=for-the-badge" alt="python" />
-   <img src="https://img.shields.io/badge/topic-pixel--art-black?style=for-the-badge" alt="pixel-art" />
-</p>
-
-**About**
-
-SpriteFetch finds image assets on a web page (including lazy-loaded and srcset sources), lets you preview and select them, and exports the results as embedded SVGs or raster formats (PNG/JPG/WEBP). It includes optional keyword filtering and ZIP bundling for bulk downloads.
+Fetch images from web pages and convert them to SVGs.
 <p>
   <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+" />
   <img src="https://img.shields.io/badge/Streamlit-1.20%2B-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit" />
@@ -96,3 +81,15 @@ streamlit run app.py
 ## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+## About
+
+Write your project "About" text here. This section is reserved for a short, personal description of the project, goals, and usage notes. Edit this to add your own voice and links.
+
+## Tags
+
+- web-scraping
+- streamlit
+- svg
+- image-processing
+- python
