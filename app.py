@@ -149,13 +149,32 @@ def robust_fetch(url, timeout=15):
                     pass
                 st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
                 return res
+            elif code == 403:
+                # Forbidden — don't retry. Log once to avoid spam.
+                errs = st.session_state.setdefault('fetch_errors_seen', {})
+                if errs.get(url, 0) < 1:
+                    logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned 403 for {url}")
+                errs[url] = errs.get(url, 0) + 1
+                class DummyResponse403:
+                    status_code = 403
+                    text = 'Forbidden'
+                    content = b""
+                st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
+                return DummyResponse403()
             elif code == 429:
-                logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned 429 for {url}")
+                # Rate limited — retry with backoff
+                errs = st.session_state.setdefault('fetch_errors_seen', {})
+                if errs.get(url, 0) < 2:
+                    logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned 429 for {url}")
+                errs[url] = errs.get(url, 0) + 1
                 wait = backoff ** attempt
                 time.sleep(wait)
                 continue
             else:
-                logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned {code} for {url}")
+                errs = st.session_state.setdefault('fetch_errors_seen', {})
+                if errs.get(url, 0) < 1:
+                    logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned {code} for {url}")
+                errs[url] = errs.get(url, 0) + 1
         except Exception as e:
             logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper error for {url}: {e}")
 
@@ -172,13 +191,30 @@ def robust_fetch(url, timeout=15):
                     pass
                 st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
                 return res
+            elif code == 403:
+                errs = st.session_state.setdefault('fetch_errors_seen', {})
+                if errs.get(url, 0) < 1:
+                    logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned 403 for {url}; headers used: {headers}")
+                errs[url] = errs.get(url, 0) + 1
+                class DummyResponse403Req:
+                    status_code = 403
+                    text = 'Forbidden'
+                    content = b""
+                st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
+                return DummyResponse403Req()
             elif code == 429:
-                logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned 429 for {url}; headers used: {headers}")
+                errs = st.session_state.setdefault('fetch_errors_seen', {})
+                if errs.get(url, 0) < 2:
+                    logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned 429 for {url}; headers used: {headers}")
+                errs[url] = errs.get(url, 0) + 1
                 wait = backoff ** attempt
                 time.sleep(wait)
                 continue
             else:
-                logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned {code} for {url}; headers used: {headers}")
+                errs = st.session_state.setdefault('fetch_errors_seen', {})
+                if errs.get(url, 0) < 1:
+                    logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned {code} for {url}; headers used: {headers}")
+                errs[url] = errs.get(url, 0) + 1
                 st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
                 return res
         except Exception as e:
