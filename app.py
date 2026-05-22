@@ -106,32 +106,91 @@ def robust_fetch(url, timeout=15):
         "Upgrade-Insecure-Requests": "1"
     }
 
-    # Try cloudscraper first (handles common Cloudflare protections)
+    # Initialize session cache and per-host timestamps
     try:
-        scraper = cloudscraper.create_scraper(browser={"browser": "chrome", "platform": "windows", "desktop": True})
-        res = scraper.get(url, headers=base_headers, timeout=timeout, allow_redirects=True)
-        if res is not None and getattr(res, 'status_code', None) == 200:
-            return res
-        logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned {getattr(res, 'status_code', None)} for {url}")
-    except Exception as e:
-        logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper error for {url}: {e}")
+        cache = st.session_state.get('fetch_cache', {})
+    except Exception:
+        cache = {}
 
-    # Fallback: plain requests with a slightly different header set
+    # Return cached 200 responses immediately
+    if url in cache:
+        cached = cache[url]
+        class CachedResponse:
+            status_code = cached.get('status_code', 200)
+            text = cached.get('text', '')
+            content = cached.get('content', b"")
+        return CachedResponse()
+
+    host = urlparse(url).netloc
     try:
-        headers = base_headers.copy()
-        # Add some headers that sometimes help with basic bot checks
-        headers.update({"X-Requested-With": "XMLHttpRequest", "DNT": "1"})
-        res = requests.get(url, headers=headers, timeout=timeout, allow_redirects=True)
-        if getattr(res, 'status_code', None) != 200:
-            logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned {getattr(res, 'status_code', None)} for {url}; headers used: {headers}")
-        return res
-    except Exception as e:
-        logging.getLogger('spritefetch').error(f"robust_fetch: requests exception for {url}: {e}")
-        class DummyResponse:
-            status_code = 500
-            text = str(e)
-            content = b""
-        return DummyResponse()
+        last_ts = st.session_state.get('fetch_timestamps', {}).get(host, 0)
+    except Exception:
+        last_ts = 0
+
+    min_interval = 0.5  # seconds between requests to same host
+    elapsed = time.time() - last_ts
+    if elapsed < min_interval:
+        time.sleep(min_interval - elapsed)
+
+    max_retries = 3
+    backoff = 1.5
+
+    for attempt in range(1, max_retries + 1):
+        # Try cloudscraper first
+        try:
+            scraper = cloudscraper.create_scraper(browser={"browser": "chrome", "platform": "windows", "desktop": True})
+            res = scraper.get(url, headers=base_headers, timeout=timeout, allow_redirects=True)
+            code = getattr(res, 'status_code', None)
+            if code == 200:
+                # cache the successful bytes
+                try:
+                    st.session_state.setdefault('fetch_cache', {})[url] = {'status_code': 200, 'content': res.content, 'text': res.text}
+                except Exception:
+                    pass
+                st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
+                return res
+            elif code == 429:
+                logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned 429 for {url}")
+                wait = backoff ** attempt
+                time.sleep(wait)
+                continue
+            else:
+                logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper returned {code} for {url}")
+        except Exception as e:
+            logging.getLogger('spritefetch').warning(f"robust_fetch: cloudscraper error for {url}: {e}")
+
+        # Fallback to requests
+        try:
+            headers = base_headers.copy()
+            headers.update({"X-Requested-With": "XMLHttpRequest", "DNT": "1"})
+            res = requests.get(url, headers=headers, timeout=timeout, allow_redirects=True)
+            code = getattr(res, 'status_code', None)
+            if code == 200:
+                try:
+                    st.session_state.setdefault('fetch_cache', {})[url] = {'status_code': 200, 'content': res.content, 'text': res.text}
+                except Exception:
+                    pass
+                st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
+                return res
+            elif code == 429:
+                logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned 429 for {url}; headers used: {headers}")
+                wait = backoff ** attempt
+                time.sleep(wait)
+                continue
+            else:
+                logging.getLogger('spritefetch').warning(f"robust_fetch: requests returned {code} for {url}; headers used: {headers}")
+                st.session_state.setdefault('fetch_timestamps', {})[host] = time.time()
+                return res
+        except Exception as e:
+            logging.getLogger('spritefetch').error(f"robust_fetch: requests exception for {url}: {e}")
+            time.sleep(backoff ** attempt)
+
+    # All retries exhausted
+    class DummyResponse:
+        status_code = 429
+        text = "Too Many Requests"
+        content = b""
+    return DummyResponse()
 
 def convert_to_embedded_svg(img_bytes: bytes, original_format: str) -> bytes:
     """Wraps raster bytes into a scalable SVG vector container"""
